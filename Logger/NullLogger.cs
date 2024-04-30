@@ -4,15 +4,11 @@ namespace Logger
 {
     public class NullLogger : ILogger
     {
-        public void Init(LogLevel logLvl, InitFlags flags, string fullQualifiedFileName)
+        public void Init(LogLevel logLevel, InitFlags flags, string fullQualifiedFileName, int rolloverSize = 0)
         {
         }
 
-        public void Init(LogLevel logLvl, InitFlags flags, string fullQualifiedFileName, int rolloverSize)
-        {
-        }
-
-        public void SetLogLevel(LogLevel logLvl)
+        public void SetLogLevel(LogLevel logLevel)
         {
         }
 

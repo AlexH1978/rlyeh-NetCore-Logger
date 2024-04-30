@@ -16,22 +16,17 @@ namespace Logger
         }
 
         #region ILogger
-        public void Init(LogLevel logLvl, InitFlags flags, string fullQualifiedFileName)
+        public void Init(LogLevel logLevel, InitFlags flags, string fullQualifiedFileName, int rolloverSize = 0)
         {
-            Init(logLvl, flags, fullQualifiedFileName, 0);
-        }
-
-        public void Init(LogLevel logLvl, InitFlags flags, string fullQualifiedFileName, int rolloverSize)
-        {
-            if(logLvl != LogLevel.None && flags == InitFlags.None)
-                throw new ArgumentException($"Invalid args {nameof(logLvl)}, {nameof(flags)}");
+            if(logLevel != LogLevel.None && flags == InitFlags.None)
+                throw new ArgumentException($"Invalid args {nameof(logLevel)}, {nameof(flags)}");
 
             if((flags & InitFlags.FileLog) != 0 && String.IsNullOrWhiteSpace(fullQualifiedFileName))
                 throw new ArgumentException($"Invalid args {nameof(flags)}, {nameof(fullQualifiedFileName)}");
 
             try
             {
-                _debug.WriteDebugOutput(LogLevel.Debug, () => $"Start logLvl:{logLvl} flags:{flags} fullQualifiedFileName:{fullQualifiedFileName}");
+                _debug.WriteDebugOutput(LogLevel.Debug, () => $"Start logLevel:{logLevel} flags:{flags} fullQualifiedFileName:{fullQualifiedFileName}");
                 
                 lock(_syncRoot)
                 {
@@ -45,7 +40,7 @@ namespace Logger
 
                 StopLogThread();
                 _flags = flags;
-                _logLevel = logLvl;
+                _logLevel = logLevel;
                 _rolloverSize = rolloverSize;
                 
                 if((_flags & InitFlags.FileLog) != 0)
@@ -93,13 +88,13 @@ namespace Logger
             }
         }
 
-        public void SetLogLevel(LogLevel logLvl)
+        public void SetLogLevel(LogLevel logLevel)
         {
             try
             {
                 _debug.WriteDebugOutput(LogLevel.Debug, "Start");
                 VerifyInitialisation();
-                _logLevel = logLvl;
+                _logLevel = logLevel;
             }
             catch (Exception e)
             {

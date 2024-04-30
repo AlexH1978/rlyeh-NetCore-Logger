@@ -54,10 +54,7 @@ namespace LoggerTester
                 _sectionTime.Start();
                 _logger = LoggerFactory.GetLogger(true);
                 
-                _logger.Init(LogLevel.Trace,
-                                    InitFlags.FileLog,
-                                    fileName,
-                                    size);
+                _logger.Init(LogLevel.Trace, InitFlags.FileLog, fileName, size);
             }
             catch(Exception e)
             {
@@ -209,7 +206,7 @@ namespace LoggerTester
         {
             try
             {
-                WriteInfo("-> Write 180000 basic logs");
+                WriteInfo("-> Write 10000 basic logs delayed");
                 _sectionTime.Start();
                 for(int i = 0; i < 10000; i++)
                 {

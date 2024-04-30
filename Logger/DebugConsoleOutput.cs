@@ -20,16 +20,16 @@ namespace Logger
 
         private class LogDataDto
         {
-            internal LogLevel LogLvl { get; private set; }
+            internal LogLevel LogLevel { get; private set; }
             internal string Message { get; private set; }
             internal string Path { get; private set; }
             internal string Caller { get; private set; }
             internal int LineNo { get; private set; }
             internal int ThreadId { get; private set; }
 
-            internal LogDataDto(LogLevel logLvl, string message, string path, string caller, int lineNo, int threadId)
+            internal LogDataDto(LogLevel logLevel, string message, string path, string caller, int lineNo, int threadId)
             {
-                LogLvl = logLvl;
+                LogLevel = logLevel;
                 Message = message;
                 Path = path;
                 Caller = caller;
@@ -39,13 +39,13 @@ namespace Logger
         }
 
 #pragma warning disable CS8625
-        internal void WriteDebugOutput(LogLevel logLvl, string logStr, [CallerFilePath] string path = null, [CallerMemberName] string caller = null, [CallerLineNumber] int lineNo = 0)
+        internal void WriteDebugOutput(LogLevel logLevel, string logStr, [CallerFilePath] string path = null, [CallerMemberName] string caller = null, [CallerLineNumber] int lineNo = 0)
         {
 #if DEBUG
             if(!DebugLoggingEnabled || String.IsNullOrWhiteSpace(logStr))
                 return;
 
-            WriteToConsole(new LogDataDto(logLvl, logStr, path, caller, lineNo, Thread.CurrentThread.ManagedThreadId));
+            WriteToConsole(new LogDataDto(logLevel, logStr, path, caller, lineNo, Thread.CurrentThread.ManagedThreadId));
 #endif
         }
 
@@ -60,14 +60,14 @@ namespace Logger
 #endif
         }
 
-        internal void WriteDebugOutput(LogLevel logLvl, Func<string> logFunc, [CallerFilePath] string path = null, [CallerMemberName] string caller = null, [CallerLineNumber] int lineNo = 0)
+        internal void WriteDebugOutput(LogLevel logLevel, Func<string> logFunc, [CallerFilePath] string path = null, [CallerMemberName] string caller = null, [CallerLineNumber] int lineNo = 0)
         {
 #if DEBUG
             // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if(!DebugLoggingEnabled || logFunc == null)
                 return;
 
-            WriteToConsole(new LogDataDto(logLvl, logFunc.Invoke(), path, caller, lineNo, Thread.CurrentThread.ManagedThreadId));
+            WriteToConsole(new LogDataDto(logLevel, logFunc.Invoke(), path, caller, lineNo, Thread.CurrentThread.ManagedThreadId));
 #endif
         }
 #pragma warning restore CS8625
@@ -80,11 +80,11 @@ namespace Logger
 
             try
             {
-                var str = $"DEBUG-{DateTime.Now:MM/dd/yyyy-HH:mm:ss.fff} [{logData.LogLvl}] {Path.GetFileName(logData.Path)}.{logData.Caller}(L:{logData.LineNo}/T:{logData.ThreadId}) - {logData.Message}";
+                var str = $"DEBUG-{DateTime.Now:MM/dd/yyyy-HH:mm:ss.fff} [{logData.LogLevel}] {Path.GetFileName(logData.Path)}.{logData.Caller}(L:{logData.LineNo}/T:{logData.ThreadId}) - {logData.Message}";
 
                 var currentColor = Console.ForegroundColor;
                 
-                switch (logData.LogLvl)
+                switch (logData.LogLevel)
                 {
                     case LogLevel.Trace:
                     case LogLevel.Debug:

@@ -7,14 +7,11 @@ using System.Threading.Tasks;
 
 namespace Logger
 {
-    /// <summary>
-    /// Provides an ILoggerService, which can be used to create and control a Microsoft.Extensions.Logging.ILogger.
-    /// </summary>
     internal partial class LoggerService
     {
         private ServiceState _state;
-        private readonly object _syncRoot = new object();
-        private readonly ConcurrentQueue<LoggerObj> _logQueue = new ConcurrentQueue<LoggerObj>();
+        private readonly object _syncRoot = new();
+        private readonly ConcurrentQueue<LoggerObj> _logQueue = new();
         private readonly DebugConsoleOutput _debug;
         private bool _doLogging;
         private Task? _logTask;
@@ -25,9 +22,9 @@ namespace Logger
         private InitFlags _flags = InitFlags.None;
         private DateTime _fileLastFlush = DateTime.MinValue;
         private uint _fileRolloverSuffix ;
-        bool _timerInvoke;
-        int _rolloverSize;
-        Timer? _rolloverTimer;
+        private bool _timerInvoke;
+        private int _rolloverSize;
+        private Timer? _rolloverTimer;
 
         internal bool EnableDebugLogging 
         { 
