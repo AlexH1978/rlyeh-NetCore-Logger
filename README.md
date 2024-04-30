@@ -8,3 +8,5 @@ Currently tested for .Net 7 and 8.
 If you find a bug or have questions about the usage, please let me know.
 
 You can see how the logger is used in the LoggerTester project.
+
+The first beta version is branched v0.9.0
